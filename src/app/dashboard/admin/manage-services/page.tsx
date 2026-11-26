@@ -85,7 +85,8 @@ export default function ManageServicesPage() {
   }, [debouncedSearch, status, category]);
 
   useEffect(() => {
-    void load();
+    const timer = setTimeout(() => { void load(); }, 0);
+    return () => clearTimeout(timer);
   }, [load]);
 
   const pendingCount = useMemo(

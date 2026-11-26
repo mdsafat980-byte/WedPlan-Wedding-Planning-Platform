@@ -23,6 +23,8 @@ import { api } from "@/lib/api";
 import { formatDate } from "@/lib/constants";
 import type { Booking, CustomerStats } from "@/lib/types";
 
+const UPCOMING_CUTOFF_MS = Date.now() - 86_400_000;
+
 export default function CustomerOverviewPage() {
   const { user } = useAuth();
   const [stats, setStats] = useState<CustomerStats | null>(null);
@@ -48,7 +50,8 @@ export default function CustomerOverviewPage() {
   }, []);
 
   useEffect(() => {
-    void load();
+    const timer = setTimeout(() => { void load(); }, 0);
+    return () => clearTimeout(timer);
   }, [load]);
 
   const upcoming = useMemo(
@@ -57,7 +60,7 @@ export default function CustomerOverviewPage() {
         .filter(
           (booking) =>
             booking.status === "accepted" &&
-            new Date(booking.eventDate).getTime() >= Date.now() - 86_400_000,
+            new Date(booking.eventDate).getTime() >= UPCOMING_CUTOFF_MS,
         )
         .sort(
           (a, b) => new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime(),

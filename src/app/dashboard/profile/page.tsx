@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
@@ -33,26 +33,15 @@ export default function ProfilePage() {
   const router = useRouter();
   const fileInput = useRef<HTMLInputElement>(null);
 
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [businessName, setBusinessName] = useState("");
-  const [bio, setBio] = useState("");
-  const [image, setImage] = useState("");
+  const [name, setName] = useState(user?.name || "");
+  const [phone, setPhone] = useState(user?.phone || "");
+  const [businessName, setBusinessName] = useState(user?.businessName || "");
+  const [bio, setBio] = useState(user?.bio || "");
+  const [image, setImage] = useState(user?.image || "");
   const [uploading, setUploading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [upgrading, setUpgrading] = useState(false);
 
-  useEffect(() => {
-    if (!user) return;
-    setName(user.name || "");
-    setPhone(user.phone || "");
-    setBusinessName(user.businessName || "");
-    setBio(user.bio || "");
-    setImage(user.image || "");
-    // Only re-initialise when the signed-in account changes, so a session
-    // refresh does not wipe fields the user is currently editing.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id]);
 
   if (!user) return null;
 

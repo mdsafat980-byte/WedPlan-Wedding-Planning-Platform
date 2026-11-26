@@ -51,7 +51,8 @@ export default function VendorSubscriptionPage() {
   }, []);
 
   useEffect(() => {
-    void load();
+    const timer = setTimeout(() => { void load(); }, 0);
+    return () => clearTimeout(timer);
   }, [load]);
 
   const upgrade = async () => {
@@ -102,7 +103,7 @@ export default function VendorSubscriptionPage() {
   const isPremium = info.plan === "premium";
   const usagePercent = Math.min(
     100,
-    Math.round((info.activeServices / Math.max(info.freeLimit, 1)) * 100),
+    Math.round((info.serviceSlotsUsed / Math.max(info.freeLimit, 1)) * 100),
   );
 
   return (
@@ -134,7 +135,7 @@ export default function VendorSubscriptionPage() {
               <div className="flex items-center justify-between text-xs font-semibold">
                 <span>Active approved services</span>
                 <span>
-                  {info.activeServices} / {info.freeLimit}
+                  {info.serviceSlotsUsed} / {info.freeLimit}
                 </span>
               </div>
               <div className="mt-2 h-2 overflow-hidden rounded-full bg-border">
@@ -145,7 +146,7 @@ export default function VendorSubscriptionPage() {
                   style={{ width: `${usagePercent}%` }}
                 />
               </div>
-              {info.activeServices >= info.freeLimit && (
+              {info.serviceSlotsUsed >= info.freeLimit && (
                 <p className="mt-2 text-[11px] leading-4 text-amber-700">
                   You have reached the Free plan limit. Upgrade to publish more listings.
                 </p>

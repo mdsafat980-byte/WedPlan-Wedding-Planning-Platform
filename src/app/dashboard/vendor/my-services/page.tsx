@@ -44,7 +44,8 @@ export default function VendorServicesPage() {
   }, []);
 
   useEffect(() => {
-    void load();
+    const timer = setTimeout(() => { void load(); }, 0);
+    return () => clearTimeout(timer);
   }, [load]);
 
   const toggleAvailability = async (service: Service) => {

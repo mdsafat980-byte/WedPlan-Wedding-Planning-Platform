@@ -42,7 +42,7 @@ export default function AddServicePage() {
               ? "You can publish unlimited active services."
               : atLimit
                 ? `You have reached the ${stats.freeLimit} active service limit. Upgrade to Premium to add more listings.`
-                : `You are using ${stats.activeServices} of ${stats.freeLimit} active service slots.`}
+                : `You are using ${stats.serviceSlotsUsed} of ${stats.freeLimit} active service slots, including services awaiting review.`}
             {atLimit && (
               <Link href="/dashboard/vendor/subscription" className="ml-1 font-bold underline">
                 Upgrade now

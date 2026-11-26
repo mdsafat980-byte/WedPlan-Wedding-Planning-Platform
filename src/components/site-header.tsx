@@ -17,6 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -86,18 +87,20 @@ export function SiteHeader() {
                 <span className="max-w-32 truncate">{user.name}</span>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-64">
-                <DropdownMenuLabel className="px-2 py-2">
-                  <p className="truncate text-sm font-semibold">{user.name}</p>
-                  <p className="truncate text-xs font-normal text-muted-foreground">
-                    {user.email}
-                  </p>
-                  <p className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-primary">
-                    {user.role}
-                    {user.role === "vendor" && user.subscriptionPlan === "premium"
-                      ? " · premium"
-                      : ""}
-                  </p>
-                </DropdownMenuLabel>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel className="px-2 py-2">
+                    <p className="truncate text-sm font-semibold">{user.name}</p>
+                    <p className="truncate text-xs font-normal text-muted-foreground">
+                      {user.email}
+                    </p>
+                    <p className="mt-1 text-[11px] font-semibold uppercase tracking-wide text-primary">
+                      {user.role}
+                      {user.role === "vendor" && user.subscriptionPlan === "premium"
+                        ? " · premium"
+                        : ""}
+                    </p>
+                  </DropdownMenuLabel>
+                </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   className="gap-2"

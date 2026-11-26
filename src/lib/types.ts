@@ -86,6 +86,7 @@ export type Booking = {
 export type VendorStats = {
   totalServices: number;
   activeServices: number;
+  serviceSlotsUsed: number;
   pendingBookings: number;
   acceptedBookings: number;
   pendingServices: number;
@@ -139,6 +140,7 @@ export type SubscriptionInfo = {
   subscriptionPlan: "free" | "premium";
   subscriptionExpiresAt: string | null;
   activeServices: number;
+  serviceSlotsUsed: number;
   freeLimit: number;
   premium: {
     price: number;

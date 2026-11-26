@@ -46,7 +46,8 @@ export default function VendorOverviewPage() {
   }, []);
 
   useEffect(() => {
-    void load();
+    const timer = setTimeout(() => { void load(); }, 0);
+    return () => clearTimeout(timer);
   }, [load]);
 
   if (loading) {
@@ -89,7 +90,7 @@ export default function VendorOverviewPage() {
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard label="Total services" value={stats?.totalServices ?? 0} icon={Sparkles} hint={`${stats?.pendingServices ?? 0} awaiting review`} />
-        <StatCard label="Active services" value={stats?.activeServices ?? 0} icon={CheckCircle2} tone="green" hint={`Free plan limit: ${stats?.freeLimit ?? 3}`} />
+        <StatCard label="Active services" value={stats?.activeServices ?? 0} icon={CheckCircle2} tone="green" hint={stats?.plan === "premium" ? "Unlimited with Premium" : `${stats?.serviceSlotsUsed ?? 0} of ${stats?.freeLimit ?? 3} slots used`} />
         <StatCard label="Pending requests" value={stats?.pendingBookings ?? 0} icon={Clock} tone="amber" hint="Waiting for your response" />
         <StatCard label="Accepted bookings" value={stats?.acceptedBookings ?? 0} icon={CalendarCheck} tone="stone" hint="Confirmed celebrations" />
       </div>

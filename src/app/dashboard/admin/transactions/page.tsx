@@ -45,7 +45,8 @@ export default function TransactionsPage() {
   }, [filter]);
 
   useEffect(() => {
-    void load();
+    const timer = setTimeout(() => { void load(); }, 0);
+    return () => clearTimeout(timer);
   }, [load]);
 
   const totals = useMemo(() => {

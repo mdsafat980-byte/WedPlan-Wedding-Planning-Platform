@@ -51,7 +51,8 @@ export default function AdminOverviewPage() {
   }, []);
 
   useEffect(() => {
-    void load();
+    const timer = setTimeout(() => { void load(); }, 0);
+    return () => clearTimeout(timer);
   }, [load]);
 
   const approve = async (service: Service) => {

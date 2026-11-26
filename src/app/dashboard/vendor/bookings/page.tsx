@@ -64,7 +64,8 @@ export default function VendorBookingsPage() {
   }, []);
 
   useEffect(() => {
-    void load();
+    const timer = setTimeout(() => { void load(); }, 0);
+    return () => clearTimeout(timer);
   }, [load]);
 
   const counts = useMemo(() => {
