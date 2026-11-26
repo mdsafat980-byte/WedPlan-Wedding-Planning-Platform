@@ -5,7 +5,7 @@ The WedPlan web application: a responsive, role-based wedding marketplace built 
 **ShadCN/Base UI** and **Framer Motion**.
 
 > API repository: <https://github.com/mdsafat980-byte/WedPlan-Wedding-Planning-Platform-server>
-> Live site: <https://wedplan-client-safat1.vercel.app>
+> Live site: <https://wed-plan-wedding-planning-platform.vercel.app>
 > API: <https://wedplan-api-ngt2.onrender.com> (health:
 > <https://wedplan-api-ngt2.onrender.com/api/health>).
 
