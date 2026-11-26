@@ -4,8 +4,8 @@ The WedPlan web application: a responsive, role-based wedding marketplace built 
 **Next.js 16 (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS 4**,
 **ShadCN/Base UI** and **Framer Motion**.
 
-> API repository: _add the server repository URL here._
-> Live site: _add the deployed Vercel URL here._
+> API repository: <https://github.com/mdsafat980-byte/WedPlan-Wedding-Planning-Platform-server>
+> Live site: Not deployed yet; deployment requires a hosted API URL.
 
 ## Getting started
 
@@ -136,8 +136,11 @@ Never commit `.env.local`. Only `.env.example` is tracked.
 
 ## Deployment
 
-1. Push this folder as its own GitHub repository.
-2. Import it into Vercel.
-3. Set `NEXT_PUBLIC_API_URL` to the deployed API URL.
-4. Ensure the API's `CLIENT_URL` matches the deployed client origin.
-5. Add the deployed URL and repository link to the top of this README.
+1. Import this repository into Vercel.
+2. Set `NEXT_PUBLIC_API_URL` to the deployed Render API URL.
+3. Deploy, then set the API's `CLIENT_URL` to the Vercel deployment origin and redeploy
+   the API if needed.
+4. Verify registration, login, booking and role-protected dashboards against the hosted API.
+
+The client has no public live URL until the API is deployed and this environment variable is
+configured. Never commit production credentials.
