@@ -1,36 +1,143 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WedPlan Client
 
-## Getting Started
+The WedPlan web application: a responsive, role-based wedding marketplace built with
+**Next.js 16 (App Router)**, **React 19**, **TypeScript**, **Tailwind CSS 4**,
+**ShadCN/Base UI** and **Framer Motion**.
 
-First, run the development server:
+> API repository: _add the server repository URL here._
+> Live site: _add the deployed Vercel URL here._
+
+## Getting started
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open **http://localhost:3000**. The Express API must be running at the URL in
+`NEXT_PUBLIC_API_URL` (default `http://localhost:5000`).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+NEXT_PUBLIC_API_URL=http://localhost:5000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Use the same hostname (`localhost` or `127.0.0.1`) for the client and API. Mixing them makes
+the browser treat the auth cookie as cross-site and the session will not persist.
 
-## Learn More
+## Scripts
 
-To learn more about Next.js, take a look at the following resources:
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Start the development server |
+| `npm run build` | Production build, including type checking |
+| `npm start` | Serve the production build |
+| `npm run lint` | Run ESLint |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Public
 
-## Deploy on Vercel
+| Route | Description |
+| --- | --- |
+| `/` | Animated landing page with featured services and categories |
+| `/services` | Searchable, filterable, paginated marketplace |
+| `/services/[id]` | Gallery, vendor details, related services and booking form |
+| `/auth/login` | Email/password + Google sign-in, demo account shortcuts |
+| `/auth/register` | Customer/vendor role selection and account creation |
+| `/auth/callback` | OAuth return handler (vendor onboarding for Google users) |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Customer dashboard (`/dashboard/customer`)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Overview with booking statistics and upcoming accepted events.
+- `/my-bookings` — track and cancel pending requests.
+
+### Vendor dashboard (`/dashboard/vendor`)
+
+- Overview with listing, booking and subscription statistics.
+- `/my-services` and `/my-services/[id]` — manage and edit listings.
+- `/add-service` — create a listing with up to 8 images.
+- `/bookings` — accept or decline pending requests.
+- `/subscription` — Free vs Premium plan and Stripe checkout.
+- `/payment-success`, `/payment-cancel` — Stripe return pages.
+
+### Admin dashboard (`/dashboard/admin`)
+
+- `/` — platform statistics, review queue and recent transactions.
+- `/manage-users` — search, filter, block and unblock accounts.
+- `/manage-services` — approve, reject, pause, activate and delete listings.
+- `/transactions` — read-only Stripe transaction ledger.
+
+### Shared
+
+- `/dashboard/profile` — name, phone, bio, business name and avatar; customer-to-vendor
+  conversion for unused accounts.
+
+## Authentication flow
+
+1. **Better Auth** runs inside the Express API at `/api/auth/*` and stores users, sessions and
+   OAuth accounts in MongoDB.
+2. The client uses `authClient.useSession()` for session state and route guards.
+3. For API calls, `authClient.token()` returns a short-lived JWT signed by Better Auth. The
+   wrapper in `src/lib/api.ts` caches the token, attaches `Authorization: Bearer <token>` and
+   retries once after a `401`.
+4. The API verifies the JWT against the Better Auth JWKS endpoint and loads the live user, so
+   roles, blocks and subscriptions are enforced server-side.
+5. Dashboard route guards are a UX layer only. Every protected API independently checks the
+   role and account state.
+
+Registration passes a one-time `signupRole` value (`customer` or `vendor`). The server maps it
+to `role` in a Better Auth database hook; the `role` field itself is not client-writable.
+Google sign-ups start as customers and can call `POST /api/profile/become-vendor` once if the
+account has no activity.
+
+## Project structure
+
+```text
+src/
+├─ app/
+│  ├─ page.tsx                  Landing page
+│  ├─ services/                 Marketplace and service details
+│  ├─ auth/                     Login, register, OAuth callback
+│  └─ dashboard/                Role-based dashboard pages
+├─ components/
+│  ├─ ui/                       ShadCN/Base UI primitives
+│  ├─ dashboard/                Dashboard shell pieces and service form
+│  ├─ auth-provider.tsx         Session context and logout
+│  ├─ booking-form.tsx          Customer booking request form
+│  ├─ site-header.tsx           Responsive public navigation
+│  ├─ site-footer.tsx           Public footer
+│  ├─ service-card.tsx          Marketplace card
+│  └─ status-badge.tsx          Shared status pill
+└─ lib/
+   ├─ api.ts                    Authenticated fetch wrapper + upload helper
+   ├─ auth-client.ts            Better Auth client configuration
+   ├─ constants.ts              Categories, formatting, initials
+   └─ types.ts                  Shared API types
+```
+
+## UI notes
+
+- Theme tokens live in `src/app/globals.css` (warm ivory, rose and gold wedding palette).
+- Fonts: Playfair Display for headings and DM Sans for body text.
+- All user feedback uses Sonner toasts; there are no `alert()` or `confirm()` calls.
+- Every data page implements loading skeletons, empty states and retryable error states.
+- Framer Motion is used on the landing page (`Reveal`, hero and section animations).
+- Images are rendered with plain `<img>` because vendor uploads can come from ImgBB or the
+  local API host; the remote host is not known at build time.
+
+## Environment variables
+
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `NEXT_PUBLIC_API_URL` | Yes | Express API origin used for auth and data requests |
+
+Never commit `.env.local`. Only `.env.example` is tracked.
+
+## Deployment
+
+1. Push this folder as its own GitHub repository.
+2. Import it into Vercel.
+3. Set `NEXT_PUBLIC_API_URL` to the deployed API URL.
+4. Ensure the API's `CLIENT_URL` matches the deployed client origin.
+5. Add the deployed URL and repository link to the top of this README.
