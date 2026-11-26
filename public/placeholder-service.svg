@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+  <rect width="800" height="600" fill="#f6ede6"/>
+  <circle cx="400" cy="270" r="90" fill="#eadfd7"/>
+  <path d="M400 330c-38-26-64-55-64-86 0-24 18-42 42-42 11 0 20 4 22 10 2-6 11-10 22-10 24 0 42 18 42 42 0 31-26 60-64 86Z" fill="#a64b43"/>
+  <text x="400" y="470" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#806d67">WedPlan</text>
+</svg>
