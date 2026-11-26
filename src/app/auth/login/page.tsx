@@ -170,6 +170,11 @@ function LoginForm() {
         {googleLoading ? <Loader2 className="animate-spin" /> : <GoogleIcon />}
         Continue with Google
       </Button>
+      {searchParams.get("error") === "account_not_linked" && (
+        <p role="alert" className="mt-3 text-center text-sm text-destructive">
+          Use the same email as your WedPlan account, and make sure Google has verified it.
+        </p>
+      )}
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
         New to WedPlan?{" "}
