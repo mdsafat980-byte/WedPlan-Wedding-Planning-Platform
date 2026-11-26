@@ -6,7 +6,8 @@ The WedPlan web application: a responsive, role-based wedding marketplace built 
 
 > API repository: <https://github.com/mdsafat980-byte/WedPlan-Wedding-Planning-Platform-server>
 > Live site: <https://wedplan-client-safat1.vercel.app>
-> API: <https://wedplan-api-ngt2.onrender.com> (production environment setup is pending).
+> API: <https://wedplan-api-ngt2.onrender.com> (health:
+> <https://wedplan-api-ngt2.onrender.com/api/health>).
 
 ## Getting started
 
