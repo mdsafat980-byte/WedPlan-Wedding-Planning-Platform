@@ -178,29 +178,31 @@ function LoginForm() {
         </Link>
       </p>
 
-      <div className="mt-7 rounded-xl border border-border bg-muted/60 p-3">
-        <p className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
-          Demo accounts
-        </p>
-        <div className="mt-2 flex flex-wrap gap-2">
-          {demoAccounts.map((account) => (
-            <button
-              key={account.label}
-              type="button"
-              onClick={() => {
-                setEmail(account.email);
-                setPassword(account.password);
-              }}
-              className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-semibold transition hover:border-primary hover:text-primary"
-            >
-              {account.label}
-            </button>
-          ))}
+      {process.env.NODE_ENV !== "production" && (
+        <div className="mt-7 rounded-xl border border-border bg-muted/60 p-3">
+          <p className="text-[11px] font-bold uppercase tracking-wide text-muted-foreground">
+            Demo accounts
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {demoAccounts.map((account) => (
+              <button
+                key={account.label}
+                type="button"
+                onClick={() => {
+                  setEmail(account.email);
+                  setPassword(account.password);
+                }}
+                className="rounded-full border border-border bg-background px-2.5 py-1 text-[11px] font-semibold transition hover:border-primary hover:text-primary"
+              >
+                {account.label}
+              </button>
+            ))}
+          </div>
+          <p className="mt-2 text-[10px] leading-4 text-muted-foreground">
+            Click a role to fill the form, then press Sign in.
+          </p>
         </div>
-        <p className="mt-2 text-[10px] leading-4 text-muted-foreground">
-          Click a role to fill the form, then press Sign in.
-        </p>
-      </div>
+      )}
     </div>
   );
 }
